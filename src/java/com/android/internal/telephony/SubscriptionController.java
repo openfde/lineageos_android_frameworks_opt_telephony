@@ -41,6 +41,7 @@ import android.os.ParcelUuid;
 import android.os.PersistableBundle;
 import android.os.RegistrantList;
 import android.os.RemoteException;
+import android.os.SystemProperties;
 import android.os.TelephonyServiceManager.ServiceRegisterer;
 import android.os.UserHandle;
 import android.provider.Settings;
@@ -4023,6 +4024,14 @@ public class SubscriptionController extends ISub.Stub {
         boolean canReadPhoneState = false;
         boolean canReadIdentifiers = false;
         boolean canReadPhoneNumber = false;
+		if (TextUtils.equals(SystemProperties.get("fde.fake_sim_info", "0"), "1")) {
+            SubscriptionInfo subinfo = new SubscriptionInfo(1, "898600B818231888888C", 0, "GEMPLUS",
+                "中国移动", 0, 255, "12345", 0, null, "460", "00", "156", false,
+                null, "898600B818231888888C", 0, false, null, false,
+                0, SubscriptionManager.PROFILE_CLASS_UNSET, SubscriptionManager.SUBSCRIPTION_TYPE_LOCAL_SIM,
+                null, null, true);
+            cacheSubList.add(0, subinfo);
+		}
         try {
             canReadPhoneState = TelephonyPermissions.checkReadPhoneState(mContext,
                     SubscriptionManager.INVALID_SUBSCRIPTION_ID, Binder.getCallingPid(),
